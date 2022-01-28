@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.pixi入门</title>
+  </head>
+  <body>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+    <script>
+      //1. 创建应用程序
+      let app = new PIXI.Application({ width: 640, height: 360 });
+      // 2. 将视图添加到 DOM
+      document.body.appendChild(app.view);
+      // 3. 创建一个精灵
+      let sprite = PIXI.Sprite.from("imgs/sample.png");
+      // 4. 将精灵添加到舞台
+      app.stage.addChild(sprite);
+      // 5. 编写更新循环(动画)
+      // 5.1 添加一个变量来计算我们的演示已经运行的时间
+      let elapsed = 0.0;
+      // 5.2 告诉我们的应用程序的ticker运行一个新的回调每帧, 输入自上次滴答后经过的时间
+      app.ticker.add((delta) => {
+        // 5.3 将该时间添加到总运行时间中
+        elapsed += delta;
+        // 基于运行时间的余弦值更新精灵的X位置. 我们除以50，让动画慢一点……
+        sprite.x = 100.0 + Math.cos(elapsed / 50.0) * 100.0;
+      });
+    </script>
+  </body>
+</html>

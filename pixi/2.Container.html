@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.pixi入门</title>
+  </head>
+  <body>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+    <script>
+      let app = new PIXI.Application({ width: 640, height: 360 });
+      document.body.appendChild(app.view);
+
+      // Create window frame
+      let frame = new PIXI.Graphics();
+      // 内容填充颜色
+      frame.beginFill(0x666666);
+      // 边框颜色
+      frame.lineStyle({ color: 0xffffff, width: 4, alignment: 0 });
+      // 绘制矩形， 只是将需要绘制的矩形数据存储起来，并没有真正的绘制
+      frame.drawRect(0, 0, 208, 208);
+      // 设置位置
+      frame.position.set(320 - 100, 180 - 100);
+      // 添加至屏幕上，真正的绘制
+      app.stage.addChild(frame);
+
+      // Create a graphics object to define our mask
+      let mask = new PIXI.Graphics();
+      // Add the rectangular area to show
+      mask.beginFill(0xffffff);
+      mask.drawRect(0, 0, 400, 200);
+      mask.endFill();
+
+      // 添加一个容器来保存我们的遮罩内容
+      let maskContainer = new PIXI.Container();
+      // Set the mask to use our graphics object from above
+      maskContainer.mask = mask;
+      // Add the mask as a child, so that the mask is positioned relative to its parent
+      maskContainer.addChild(mask);
+      // Offset by the window's frame width
+      maskContainer.position.set(4, 4);
+      // And add the container to the window!
+      frame.addChild(maskContainer);
+
+      // Create contents for the masked container
+      let text = new PIXI.Text(
+        "This text will scroll up and be masked, so you can see how masking works.  Lorem ipsum and all that.\n\n" +
+          "You can put anything in the container and it will be masked!",
+        {
+          fontSize: 24,
+          fill: 0x1010ff,
+          wordWrap: true,
+          wordWrapWidth: 180,
+        }
+      );
+      text.x = 10;
+      maskContainer.addChild(text);
+
+      // Add a ticker callback to scroll the text up and down
+      let elapsed = 0.0;
+      app.ticker.add((delta) => {
+        // Update the text's y coordinate to scroll it
+        elapsed += delta;
+        text.y = 10 + -100.0 + Math.cos(elapsed / 50.0) * 100.0;
+      });
+    </script>
+  </body>
+</html>
