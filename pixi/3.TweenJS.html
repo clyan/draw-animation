@@ -9,7 +9,6 @@
   <body>
     <script src="./js/pixi.js"></script>
     <script src="./js/Tween.min.js"></script>
-    <script src="./js/bezier.iife.js"></script>
     <script>
       function get_bezier_dot(t, obj) {
         var x =
@@ -34,8 +33,6 @@
       graphics.endFill();
       app.stage.addChild(graphics);
 
-      var curve = new Bezier.Bezier(150, 40, 80, 30, 105, 150);
-      console.log("curve", curve);
       graphics.x = 150;
       graphics.y = 280;
       const coords = { x: graphics.x, y: graphics.y };

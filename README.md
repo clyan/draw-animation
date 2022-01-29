@@ -12,4 +12,4 @@
 [html js动画](http://lamberta.github.io/html5-animation/)
 
 [tween.js](https://github.com/tweenjs/tween.js/)
-[《HTML5 + JavaScript 动画基础》读书笔记]([0](https://github.com/JChehe/blog/issues/40))
+[《HTML5 + JavaScript 动画基础》读书笔记](https://github.com/JChehe/blog/issues/40)

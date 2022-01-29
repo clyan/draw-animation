@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="http://esotericsoftware.com/files/spine-player/4.0/spine-player.css">
+
+</head>
+
+<body>
+    <div id="player-container" style="width: 100%; height: 100vh;"></div>
+    
+
+    <script src="http://esotericsoftware.com/files/spine-player/4.0/spine-player.js"></script>
+    <script>
+    
+    new spine.SpinePlayer("player-container", {
+        jsonUrl: "./assets/raptor-pro.json",
+        atlasUrl: "./assets/raptor-pma.atlas",
+        alpha : true , // 启用播放器半透明
+        backgroundColor : "#00000000",  // 背景完全透明
+        success: function (player) {
+            console.log("player", player)
+            player.play()
+        },
+        // animation: "animation"
+    });
+    // new spine.SpinePlayer("player-container", {
+    //     jsonUrl: "./huntianling_json/huntianling1.json",
+    //     atlasUrl: "./huntianling_json/huntianling1.atlas",
+    //     alpha : true , // 启用播放器半透明
+    //     backgroundColor : "#00000000",  // 背景完全透明
+    //     success: function (player) {
+    //         console.log("player", player)
+    //         player.play()
+    //     },
+    //     // animation: "animation"
+    // });
+    </script>
+</body>
+</body>
+
+</html>

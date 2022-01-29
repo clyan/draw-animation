@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 500px;
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="win"></div>
+    <div id="voi_pk_start"></div>
+    <div id="lose"></div>
+    <script src="./svga.min.js"></script>
+    <script>
+      let svga = {};
+      function svgaInit(id, name, loop, finished) {
+        //svga初始化x;
+        const src = `http://xy-sh-plat.oss-cn-shanghai.aliyuncs.com/web/SVGA/${name}`;
+
+        if (!svga[id]) {
+          svga[id] = {};
+          const _id = `#${id}`;
+          svga[id]["player"] = new SVGA.Player(_id);
+          svga[id]["Parser"] = new SVGA.Parser(_id);
+        }
+        svga[id]["Parser"].load(src, function (videoItem) {
+          if (loop) {
+            svga[id]["player"].loops = 1;
+          }
+          svga[id]["player"].setVideoItem(videoItem);
+          svga[id]["player"].startAnimation();
+        });
+        if (finished) {
+          svga[id]["player"].onFinished(finished);
+        }
+      }
+      svgaInit("app", "pk.svga", "", () => {});
+      svgaInit("win", "win.svga", "", () => {});
+      svgaInit("voi_pk_start", "voi_pk_start.svga", "", () => {});
+      svgaInit("lose", "lose.svga", "", () => {});
+    </script>
+  </body>
+</html>
