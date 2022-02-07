@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+  <style type="text/css">
+    html,body{margin:0;padding:0}
+    body{
+        position:fixed;
+        width:100%;
+        height:100%
+    }
+    #app,#app>div{
+        width:100%;
+        height:100%
+    }
+    .car{
+        width:100%;
+        height:40px;
+        line-height:30px;
+        position:absolute;
+        bottom:0;
+        border:1px solid #ddd;
+        display:flex;
+        justify-content:flex-end;
+    }
+    .car-content{
+        margin-right:30px;
+        background-color:#eee;
+        padding:0 8px;
+        display:flex;
+        align-items:center;
+        position:relative
+    }
+    .car-content>.smallball{
+        position:absolute;
+        top:-8px;
+        right:-8px;
+        width:17px;
+        height:17px;
+        text-align:center;
+        color:#fff;
+        font-size:12px;
+        line-height:17px;
+        background-color:red;
+        border-radius:50%;
+        z-index:999;
+    }
+    .compute{
+        position:absolute;
+        width:300px;
+        text-align:center;
+        height:30px;
+        line-height:27px;
+        top:0;
+        left:0;bottom:0;right:0;
+        margin:auto;
+        border:1px solid #ddd
+    }
+    .compute span,.compute button{
+        vertical-align:middle
+    }
+    .ball{
+        position:absolute;
+        top: 294px;
+        left: 548px;
+        width:17px;
+        height:17px;
+        background-color:red;
+        border-radius:50%;
+        z-index:999;
+        /*transform:translate(569px,437px)*/
+    }
+    [v-cloak] { display: none }
+  </style>
+</head>
+<body>
+  <div id="app"> 
+        <div>
+            <transition v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter">
+                <div class="ball" v-if="ballFlag" v-cloak ref="ball" :style="{top: `${tt}px`,left:`${ll}px`}"></div>
+            </transition>
+            
+            <div class="compute">
+                <button @click="sub">-</button>
+                <span v-cloak ref="num">{{num}}</span>
+                <button @click="add">+</button>
+                <button @click="addToshowCar" ref="btn">加入购物车</button>
+            </div>
+            <div class="car">
+                <div class="car-content">
+                    购物车
+                    <span class="smallball" id="smallball">{{carNum}}</span>
+                </div>
+            </div>
+        </div>
+  </div>
+</body>
+  <!-- import Vue before Element -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+            return { 
+                num:0,
+                ballFlag:false,
+                tt:0,//小球因为自适应需要重新设置top值
+                ll:0,
+                carNum:0
+            }
+        },
+        mounted(){
+            this.initTopLeft()
+            window.addEventListener(
+                "resize",this.initTopLeft,false
+            );
+        },
+        methods:{
+            initTopLeft(){
+                let t = this.$refs.btn.getBoundingClientRect().top;
+                let l = this.$refs.btn.getBoundingClientRect().left;
+                this.tt = t
+                this.ll = l
+            },
+            add(){
+                this.num++
+            },
+            sub(){
+                if(this.num>1){
+                    this.num--
+                }else{
+                    return false
+                }
+            },
+            addToshowCar(){
+                this.ballFlag = !this.ballFlag
+            },
+            // 动画钩子函数
+            // 进入前状态
+            beforeEnter (el) {
+                el.style.transform = 'translate(0,0)'
+            },
+            // 进入中
+            enter (el, done) {
+                // 需要调用元素的offset操作,才有过渡的效果,否则会马上实现过渡
+                el.offsetWidth
+                //获取小球相对于页面顶部或者
+                const ball = this.$refs.ball.getBoundingClientRect()
+                //方法二：获取徽标相对于页面顶部和底部的距离，
+                //也可以用document.getElementById获取dom
+                const badgePosition = document.getElementById("smallball").getBoundingClientRect()
+                const xDist = badgePosition.left - ball.left
+                const yDist = badgePosition.top - ball.top
+                el.style.transform = `translate(${xDist}px,${yDist}px)`
+                el.style.transition = "all .5s cubic-bezier(.4,-0.3,1,.68)"
+                done()
+            },
+            // 进入后
+            afterEnter () {
+                this.ballFlag = !this.ballFlag
+                this.carNum = this.num
+            },
+        }
+    })
+  </script>
+</html>
